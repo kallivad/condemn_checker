@@ -1,0 +1,28 @@
+﻿Сборка начата 21.12.2015 12:22:24.
+     1>Проект "E:\Projects\Zubarev\EGG_COUNTER\vs2013\project.vcxproj" в узле 2 (целевые объекты Build).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Main.cpp ..\package_analysis\VehicleCouting.cpp ..\package_tracking\BlobTracking.cpp ..\package_tracking\cvblob\cvaux.cpp ..\package_tracking\cvblob\cvblob.cpp ..\package_tracking\cvblob\cvcolor.cpp ..\package_tracking\cvblob\cvcontour.cpp ..\package_tracking\cvblob\cvlabel.cpp ..\package_tracking\cvblob\cvtrack.cpp
+         cvtrack.cpp
+     1>e:\projects\zubarev\egg_counter\package_tracking\cvblob\cvtrack.cpp(26): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+         cvlabel.cpp
+     1>e:\projects\zubarev\egg_counter\package_tracking\cvblob\cvlabel.cpp(25): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+         cvcontour.cpp
+     1>e:\projects\zubarev\egg_counter\package_tracking\cvblob\cvcontour.cpp(32): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+         cvcolor.cpp
+     1>e:\projects\zubarev\egg_counter\package_tracking\cvblob\cvcolor.cpp(25): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+         cvblob.cpp
+     1>e:\projects\zubarev\egg_counter\package_tracking\cvblob\cvblob.cpp(25): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+         cvaux.cpp
+     1>e:\projects\zubarev\egg_counter\package_tracking\cvblob\cvaux.cpp(23): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+         BlobTracking.cpp
+     1>e:\projects\zubarev\egg_counter\package_tracking\blobtracking.h(4): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+         VehicleCouting.cpp
+     1>e:\projects\zubarev\egg_counter\package_analysis\vehiclecouting.h(5): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+         Main.cpp
+     1>e:\projects\zubarev\egg_counter\main.cpp(2): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+         Создание кода...
+     1>Построение проекта "E:\Projects\Zubarev\EGG_COUNTER\vs2013\project.vcxproj" завершено (целевые объекты Build) с ошибкой.
+
+СБОЙ сборки.
+
+Затраченное время: 00:00:03.80
