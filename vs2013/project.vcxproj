@@ -164,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\package_analysis\VehicleCouting.h" />
+    <ClInclude Include="..\package_bgs\IBGS.h" />
     <ClInclude Include="..\package_bgs\PBAS\PBAS.h" />
     <ClInclude Include="..\package_bgs\PBAS\PixelBasedAdaptiveSegmenter.h" />
     <ClInclude Include="..\package_tracking\BlobTracking.h" />

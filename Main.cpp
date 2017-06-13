@@ -6,6 +6,8 @@
 #include "package_tracking/BlobTracking.h"
 #include "package_analysis/VehicleCouting.h"
 
+
+
 int main(int argc, char **argv)
 {
 	std::cout << "Using OpenCV " << CV_MAJOR_VERSION << "." << CV_MINOR_VERSION << "." << CV_SUBMINOR_VERSION << std::endl;

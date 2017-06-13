@@ -32,7 +32,7 @@
 //
 //
 //Author: P.Tiefenbacher, https://sites.google.com/site/pbassegmenter/
-//Technische Universität München, Germany
+//Technische Universitï¿½t Mï¿½nchen, Germany
 //Date: 22-May-2012, Version:0.1
 ///////////
 

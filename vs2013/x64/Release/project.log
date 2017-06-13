@@ -1,19 +1,21 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(368,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
-  Main.cpp
+  PixelBasedAdaptiveSegmenter.cpp
 c:\projects\konfiskat\checker\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-  VehicleCouting.cpp
-c:\projects\konfiskat\checker\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-..\package_analysis\VehicleCouting.cpp(244): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
-..\package_analysis\VehicleCouting.cpp(315): warning C4800: int: принудительно задано логическое значение "true" или "false" (предупреждение о производительности)
-..\package_analysis\VehicleCouting.cpp(318): warning C4800: int: принудительно задано логическое значение "true" или "false" (предупреждение о производительности)
-..\package_analysis\VehicleCouting.cpp(319): warning C4800: int: принудительно задано логическое значение "true" или "false" (предупреждение о производительности)
+..\package_bgs\PBAS\PixelBasedAdaptiveSegmenter.cpp(6): warning C4305: инициализация: усечение из "double" к "float"
+..\package_bgs\PBAS\PixelBasedAdaptiveSegmenter.cpp(89): warning C4800: int: принудительно задано логическое значение "true" или "false" (предупреждение о производительности)
+..\package_bgs\PBAS\PixelBasedAdaptiveSegmenter.cpp(90): warning C4800: int: принудительно задано логическое значение "true" или "false" (предупреждение о производительности)
+..\package_bgs\PBAS\PixelBasedAdaptiveSegmenter.cpp(92): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+..\package_bgs\PBAS\PixelBasedAdaptiveSegmenter.cpp(93): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+..\package_bgs\PBAS\PixelBasedAdaptiveSegmenter.cpp(96): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+..\package_bgs\PBAS\PixelBasedAdaptiveSegmenter.cpp(99): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+..\package_bgs\PBAS\PixelBasedAdaptiveSegmenter.cpp(105): warning C4800: int: принудительно задано логическое значение "true" или "false" (предупреждение о производительности)
   Создание кода
-c:\projects\konfiskat\checker\main.cpp(45): warning C4700: использована неинициализированная локальная переменная "frame"
-  16 of 2339 functions ( 0.7%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    7 functions had inline decision re-evaluated but remain unchanged
+c:\projects\konfiskat\checker\package_tracking\cvblob\cvlabel.cpp(361): warning C4715: cvLabel: значение возвращается не при всех путях выполнения
+c:\projects\konfiskat\checker\main.cpp(47): warning C4700: использована неинициализированная локальная переменная "frame"
+  659 of 2339 functions (28.2%) were compiled, the rest were copied from previous compilation.
+    10 functions were new in current compilation
+    115 functions had inline decision re-evaluated but remain unchanged
   Создание кода завершено
 IlmImf.lib(half.obj) : warning LNK4099: "IlmImf.pdb" PDB не найден с "IlmImf.lib(half.obj)" или на "C:\Projects\Konfiskat\checker\IlmImf.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
 IlmImf.lib(IexBaseExc.obj) : warning LNK4099: "IlmImf.pdb" PDB не найден с "IlmImf.lib(IexBaseExc.obj)" или на "C:\Projects\Konfiskat\checker\IlmImf.pdb"; компоновка объекта выполняется как при отсутствии отладочных данных
