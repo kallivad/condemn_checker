@@ -13,6 +13,6 @@
 <T_inc>1</T_inc>
 <T_init>18</T_init>
 <T_lower>20</T_lower>
-<T_upper>200</T_upper>
+<T_upper>250</T_upper>
 <showOutput>1</showOutput>
 </opencv_storage>

@@ -1,1 +1,1 @@
-checker.exe ./dataset/video.avi
+checker.exe ./dataset/video.avi ./foreground/img_mask.avi
