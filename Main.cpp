@@ -26,6 +26,7 @@ int main(int argc, char **argv)
 	CvCapture *capture = 0;
 	//capture = cvCaptureFromAVI("dataset/video.avi");
 	capture = cvCaptureFromAVI(argv[1]);
+	//capture = cvCaptureFromCAM(0);
 	int width = cvGetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH);
 	int height = cvGetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT);
 	//int fps = cvGetCaptureProperty(capture, CV_CAP_PROP_FPS);
@@ -69,7 +70,11 @@ int main(int argc, char **argv)
 		frame = cvCreateImage(cvSize(new_width, new_height), inframe->depth, inframe->nChannels);
 		cvResize(inframe, frame);
 
-		cv::Mat img_input(frame);
+		cv::Mat img_input(frame);		
+		//Чистое входное изображение без отладочных отметок
+		cv::Mat img_inclear;
+		img_input.copyTo(img_inclear);
+
 		//cv::imshow("Input", img_input);
 
 		// bgs->process(...) обрабатывает изображение выделяя маску движ. объектов
@@ -121,12 +126,10 @@ int main(int argc, char **argv)
 						int roi_y1 = blob->maxy;
 						cv::Rect roi_rect = cv::Rect(roi_x0, roi_y0, roi_x1 - roi_x0, roi_y1 - roi_y0);
 
-						IplImage* input_image = cvCloneImage(&(IplImage)img_input);
+						IplImage* input_image = cvCloneImage(&(IplImage)img_inclear);
 
 						// Установка ИОР
-						// Прямоугольная область должна обязательно находиться ВНУТРИ изображения
 						cvSetImageROI(input_image, roi_rect);
-
 						// Создание образа ( image ) для сохранения вырезаниого изображения
 						// Функция cvGetSize возвращает ширину ( width ) и высоту ( height ) ИОР
 						IplImage *roi_image = cvCreateImage(cvGetSize(input_image), input_image->depth, input_image->nChannels);
@@ -135,6 +138,9 @@ int main(int argc, char **argv)
 						cv::Mat roi_img = cvarrToMat(roi_image);
 						cv::imshow("ROI issue", roi_img);
 
+						cvReleaseImage(&input_image);
+						cvReleaseImage(&roi_image);
+						//roi_img.release();
 
 						//подсвечиваем объект на входном изображении
 						cv::rectangle(img_input, roi_rect, cv::Scalar(0, 250, 0), 2);
@@ -142,12 +148,18 @@ int main(int argc, char **argv)
 				}
 
 			}
+			
 			// Подсчитываем число объектов
 			issueCounting->setInput(img_blob);
 			issueCounting->setTracks(blobTracking->getTracks());
 			issueCounting->process();
 		}
 		
+
+		img_inclear.release();
+		img_blob.release();
+		img_mask.release();
+		img_input.release();
 
 		key = cvWaitKey(1);
 	}
@@ -156,7 +168,7 @@ int main(int argc, char **argv)
 	delete blobTracking;
 	delete bgs;
 
-	//output.release();
+	//output.release();	
 	cvReleaseImage(&frame);
 	cvDestroyAllWindows();
 	cvReleaseCapture(&capture);

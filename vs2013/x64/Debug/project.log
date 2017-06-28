@@ -1,0 +1,23 @@
+﻿  cvtrack.cpp
+c:\projects\konfiskat\checker\package_tracking\cvblob\cvtrack.cpp(26): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+  cvlabel.cpp
+c:\projects\konfiskat\checker\package_tracking\cvblob\cvlabel.cpp(25): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+  cvcontour.cpp
+c:\projects\konfiskat\checker\package_tracking\cvblob\cvcontour.cpp(32): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+  cvcolor.cpp
+c:\projects\konfiskat\checker\package_tracking\cvblob\cvcolor.cpp(25): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+  cvblob.cpp
+c:\projects\konfiskat\checker\package_tracking\cvblob\cvblob.cpp(25): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+  cvaux.cpp
+c:\projects\konfiskat\checker\package_tracking\cvblob\cvaux.cpp(23): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+  BlobTracking.cpp
+c:\projects\konfiskat\checker\package_tracking\blobtracking.h(4): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+  PixelBasedAdaptiveSegmenter.cpp
+c:\projects\konfiskat\checker\package_bgs\pbas\pixelbasedadaptivesegmenter.h(4): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+  PBAS.cpp
+c:\projects\konfiskat\checker\package_bgs\pbas\pbas.h(40): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+  VehicleCouting.cpp
+c:\projects\konfiskat\checker\package_analysis\vehiclecouting.h(5): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+  Main.cpp
+c:\projects\konfiskat\checker\main.cpp(10): fatal error C1083: Не удается открыть файл включение: cv.h: No such file or directory
+  Создание кода...
