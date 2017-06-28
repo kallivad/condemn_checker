@@ -4,8 +4,8 @@
 <showAB>1</showAB>
 <fav1_use_roi>1</fav1_use_roi>
 <fav1_roi_defined>1</fav1_roi_defined>
-<fav1_roi_x0>300</fav1_roi_x0>
+<fav1_roi_x0>280</fav1_roi_x0>
 <fav1_roi_y0>10</fav1_roi_y0>
-<fav1_roi_x1>300</fav1_roi_x1>
-<fav1_roi_y1>500</fav1_roi_y1>
+<fav1_roi_x1>320</fav1_roi_x1>
+<fav1_roi_y1>600</fav1_roi_y1>
 </opencv_storage>

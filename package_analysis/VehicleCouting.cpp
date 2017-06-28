@@ -48,6 +48,7 @@ namespace FAV1
 VehicleCouting::VehicleCouting(): firstTime(true), showOutput(true), key(0), countAB(0), countBA(0), showAB(0)
 {
   std::cout << "VehicleCouting()" << std::endl;
+  loadConfig();
 }
 
 VehicleCouting::~VehicleCouting()
@@ -111,7 +112,7 @@ void VehicleCouting::process()
   img_w = img_input.size().width;
   img_h = img_input.size().height;
 
-  loadConfig();
+  //loadConfig();
 
   //--------------------------------------------------------------------------
 
@@ -136,8 +137,11 @@ void VehicleCouting::process()
     }while(1);
   }
 
-  if(FAV1::use_roi == true && FAV1::roi_defined == true)
-    cv::line(img_input, cv::Point(FAV1::roi_x0,FAV1::roi_y0), cv::Point(FAV1::roi_x1,FAV1::roi_y1), cv::Scalar(0,0,255));
+  if (FAV1::use_roi == true && FAV1::roi_defined == true) 
+  {
+	  cv::line(img_input, cv::Point(FAV1::roi_x0, FAV1::roi_y0), cv::Point(FAV1::roi_x1, FAV1::roi_y1), cv::Scalar(0, 0, 255));
+	  cv::rectangle(img_input, cv::Point(FAV1::roi_x0, FAV1::roi_y0), cv::Point(FAV1::roi_x1, FAV1::roi_y1), cv::Scalar(0, 250, 250), 2);
+  }
   
   bool ROI_OK = false;
   
@@ -321,6 +325,11 @@ void VehicleCouting::loadConfig()
   FAV1::roi_y0 = cvReadIntByName(fs, 0, "fav1_roi_y0", 0);
   FAV1::roi_x1 = cvReadIntByName(fs, 0, "fav1_roi_x1", 0);
   FAV1::roi_y1 = cvReadIntByName(fs, 0, "fav1_roi_y1", 0);
+
+  r_x0 = FAV1::roi_x0;
+  r_y0 = FAV1::roi_y0;
+  r_x1 = FAV1::roi_x1;
+  r_y1 = FAV1::roi_y1;
   
   cvReleaseFileStorage(&fs);
 }

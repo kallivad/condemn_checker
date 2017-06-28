@@ -22,11 +22,14 @@ private:
   void saveConfig();
   void loadConfig();
 
+  cvb::CvBlobs blobs;
+
 public:
   BlobTracking();
   ~BlobTracking();
 
   void process(const cv::Mat &img_input, const cv::Mat &img_mask, cv::Mat &img_output);
   const cvb::CvTracks getTracks();
+  const cvb::CvBlobs getBlobs();
 };
 

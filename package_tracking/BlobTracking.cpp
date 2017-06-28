@@ -3,6 +3,7 @@
 BlobTracking::BlobTracking() : firstTime(true), minArea(500), maxArea(20000), debugTrack(false), debugBlob(false), showBlobMask(false), showOutput(true)
 {
   std::cout << "BlobTracking()" << std::endl;
+  //loadConfig();
 }
 
 BlobTracking::~BlobTracking()
@@ -14,6 +15,12 @@ const cvb::CvTracks BlobTracking::getTracks()
 {
   return tracks;
 }
+
+const cvb::CvBlobs BlobTracking::getBlobs()
+{
+	return blobs;
+}
+
 
 void BlobTracking::process(const cv::Mat &img_input, const cv::Mat &img_mask, cv::Mat &img_output)
 {
@@ -38,10 +45,11 @@ void BlobTracking::process(const cv::Mat &img_input, const cv::Mat &img_mask, cv
 
   IplImage* labelImg = cvCreateImage(cvGetSize(frame), IPL_DEPTH_LABEL, 1);
 
-  cvb::CvBlobs blobs;
+  //cvb::CvBlobs blobs;
   unsigned int result = cvb::cvLabel(segmentated, labelImg, blobs);
+  //записываем blobs в общую структуру для извлечения
+  //this->blobs = blobs;
   
-  //cvb::cvFilterByArea(blobs, 500, 1000000);
   cvb::cvFilterByArea(blobs, minArea, maxArea);
   
   //cvb::cvRenderBlobs(labelImg, blobs, frame, frame, CV_BLOB_RENDER_BOUNDING_BOX);
@@ -70,7 +78,7 @@ void BlobTracking::process(const cv::Mat &img_input, const cv::Mat &img_mask, cv
   cvReleaseImage(&labelImg);
   delete frame;
   delete segmentated;
-  cvReleaseBlobs(blobs);
+  //cvReleaseBlobs(blobs);
   cvReleaseStructuringElement(&morphKernel);
 
   firstTime = false;

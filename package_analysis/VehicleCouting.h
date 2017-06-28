@@ -46,6 +46,10 @@ public:
   void setTracks(const cvb::CvTracks &t);
   void process();
 
+  //координаты области интереса ROI 	
+  int r_x0, r_y0;
+  int r_x1, r_y1;
+
 private:
   VehiclePosition getVehiclePosition(const CvPoint2D64f centroid);
 

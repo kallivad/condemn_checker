@@ -2,12 +2,12 @@
 <opencv_storage>
 <enableInputBlur>1</enableInputBlur>
 <enableOutputBlur>1</enableOutputBlur>
-<alpha>9.</alpha>
+<alpha>5.</alpha>
 <beta>1.</beta>
-<N>10</N>
-<Raute_min>4</Raute_min>
-<R_incdec>2.9999999329447746e-02</R_incdec>
-<R_lower>38</R_lower>
+<N>20</N>
+<Raute_min>5</Raute_min>
+<R_incdec>3.9999999105930328e-02</R_incdec>
+<R_lower>40</R_lower>
 <R_scale>5</R_scale>
 <T_dec>5.0000000745058060e-02</T_dec>
 <T_inc>1</T_inc>
