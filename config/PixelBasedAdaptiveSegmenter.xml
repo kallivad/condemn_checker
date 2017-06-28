@@ -14,5 +14,5 @@
 <T_init>18</T_init>
 <T_lower>10</T_lower>
 <T_upper>250</T_upper>
-<showOutput>1</showOutput>
+<showOutput>0</showOutput>
 </opencv_storage>
