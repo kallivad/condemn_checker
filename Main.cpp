@@ -11,6 +11,9 @@
 #include <core.hpp>
 #include <highgui.h>
 
+#include <stdio.h>
+#include <direct.h>
+
 #include "package_bgs/PBAS/PixelBasedAdaptiveSegmenter.h"
 #include "package_tracking/BlobTracking.h"
 #include "package_analysis/VehicleCouting.h"
@@ -31,6 +34,8 @@ int main(int argc, char **argv)
 	int height = cvGetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT);
 	//int fps = cvGetCaptureProperty(capture, CV_CAP_PROP_FPS);
 	
+	int camera_num = 1;
+
 	// Создание файла записи процессинга - только для отладки
 	//cv::VideoWriter output;
 	//output.open(argv[2], CV_FOURCC('H', '2', '6', '4'), fps, cv::Size(640, 480), true);
@@ -59,7 +64,11 @@ int main(int argc, char **argv)
 	int key = 0;
 	IplImage *inframe, *frame;
 	//const float kRescaleFactor = 640.0/(float)width;
-	const float kRescaleFactor = 0.5;
+	const float kRescaleFactor = 0.3;
+
+	int issue_count = 0;
+	int issue_in_roi_count = 0;
+	bool first_time = true;
 
 	while (key != 'q')
 	{
@@ -87,6 +96,7 @@ int main(int argc, char **argv)
 		cv::Mat kernel = getStructuringElement(MORPH_RECT, Size(rect_size, rect_size));
 		morphologyEx(img_mask, img_mask, MORPH_CLOSE, kernel);
 		cv::imshow("Processed Foreground", img_mask);
+		kernel.release();
 
 		//output.write(img_mask);
 
@@ -112,6 +122,14 @@ int main(int argc, char **argv)
 
 				if (centroid.x > rx0 && centroid.x < rx1 && centroid.y > ry0 && centroid.y < ry1)
 				{
+					issue_in_roi_count++;
+					if (first_time) 
+					{
+						cv::destroyWindow("ROI_issue");
+						issue_count++; 
+						first_time = false;
+					}
+
 					std::cout << "Object in zone \n";
 					
 					if (!blobs.empty())
@@ -136,7 +154,22 @@ int main(int argc, char **argv)
 						cvCopy(input_image, roi_image, NULL);
 						cvResetImageROI(input_image);
 						cv::Mat roi_img = cvarrToMat(roi_image);
-						cv::imshow("ROI issue", roi_img);
+						
+						//формирование строки директории, файла и запись в файл
+						char roi_file_dir[50];
+						char roi_file_string[50];
+						//sprintf(roi_file_string, "%s/%d/%d_issue.jpg", argv[2], issue_count, camera_num);
+						sprintf(roi_file_dir, "%s\\%d\\",argv[2],issue_count);
+						int res = mkdir(roi_file_dir);
+						sprintf(roi_file_string, "%s\%d\\cam%d_num%d_issue.jpg",argv[2], issue_count, camera_num,issue_in_roi_count);
+						std::cout << "Writing in " << roi_file_string << "\n";
+						vector<int> compression_params;
+						compression_params.push_back(CV_IMWRITE_JPEG_QUALITY);
+						compression_params.push_back(90);
+						imwrite(roi_file_string, roi_img, compression_params);
+
+						//показываем в отдельном окне
+						cv::imshow("ROI_issue", roi_img);
 
 						cvReleaseImage(&input_image);
 						cvReleaseImage(&roi_image);
@@ -145,6 +178,11 @@ int main(int argc, char **argv)
 						//подсвечиваем объект на входном изображении
 						cv::rectangle(img_input, roi_rect, cv::Scalar(0, 250, 0), 2);
 					}
+				}
+				else 
+				{ 
+					first_time = true; 
+					issue_in_roi_count = 0; 
 				}
 
 			}
@@ -159,7 +197,8 @@ int main(int argc, char **argv)
 		img_inclear.release();
 		img_blob.release();
 		img_mask.release();
-		img_input.release();
+		//img_input.release();
+		cvReleaseImage(&frame);
 
 		key = cvWaitKey(1);
 	}
@@ -169,7 +208,7 @@ int main(int argc, char **argv)
 	delete bgs;
 
 	//output.release();	
-	cvReleaseImage(&frame);
+	cvReleaseImage(&inframe);
 	cvDestroyAllWindows();
 	cvReleaseCapture(&capture);
 
