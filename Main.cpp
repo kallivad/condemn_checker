@@ -26,6 +26,7 @@ int main(int argc, char **argv)
 	std::cout << "Using OpenCV " << CV_MAJOR_VERSION << "." << CV_MINOR_VERSION << "." << CV_SUBMINOR_VERSION << std::endl;
 
 	int source_num = atoi(argv[2]);
+	int control_num = atoi(argv[8]);
 
 	/* Открытие видео источника*/
 	CvCapture* capture[7];
@@ -60,9 +61,9 @@ int main(int argc, char **argv)
 
 
 	//capture = cvCaptureFromCAM(0);
-	int width = cvGetCaptureProperty(capture[0], CV_CAP_PROP_FRAME_WIDTH);
-	int height = cvGetCaptureProperty(capture[0], CV_CAP_PROP_FRAME_HEIGHT);
-	int fps = cvGetCaptureProperty(capture[0], CV_CAP_PROP_FPS);
+	int width = cvGetCaptureProperty(capture[control_num], CV_CAP_PROP_FRAME_WIDTH);
+	int height = cvGetCaptureProperty(capture[control_num], CV_CAP_PROP_FRAME_HEIGHT);
+	int fps = cvGetCaptureProperty(capture[control_num], CV_CAP_PROP_FPS);
 
 	std::cout << "Capture created: " << width << "X" << height << "  FPS:" << fps << std::endl;
 	
@@ -84,7 +85,7 @@ int main(int argc, char **argv)
 	//cv::VideoWriter output;
 	//output.open(argv[2], CV_FOURCC('F', 'M', 'P', '4'), fps, cv::Size(width, height), false);
 
-	if (!capture[0]) {
+	if (!capture[control_num]) {
 		std::cerr << "Cannot open video!" << std::endl;
 		return 1;
 	}
@@ -156,12 +157,12 @@ int main(int argc, char **argv)
 
 		//output.write(img_mask[0]);
 
-		if (!img_mask[0].empty())
+		if (!img_mask[control_num].empty())
 		{
 			cvb::CvBlobs blobs[7];
 			cvb::CvTracks tracks;
 			
-			tracks = blobTracking[0]->getTracks();
+			tracks = blobTracking[control_num]->getTracks();
 
 		
 			for (int i = 0; i < source_num; i++)
@@ -186,7 +187,7 @@ int main(int argc, char **argv)
 				double rx1 = issueCounting->r_x1;
 				double ry1 = issueCounting->r_y1;
 
-				// Записываем картинку если попали в область ROI первой ind[0] камеры
+				// Записываем картинку если попали в область ROI контрольной [control_num] камеры
 				if (centroid.x > rx0 && centroid.x < rx1 && centroid.y > ry0 && centroid.y < ry1)
 				{
 					issue_in_roi_count++;
@@ -216,7 +217,11 @@ int main(int argc, char **argv)
 							int roi_y0 = blob->miny / kRescaleFactor;
 							int roi_x1 = blob->maxx / kRescaleFactor;
 							int roi_y1 = blob->maxy / kRescaleFactor;
-							cv::Rect roi_rect = cv::Rect(roi_x0, roi_y0, roi_x1 - roi_x0, roi_y1 - roi_y0);
+							int width = roi_x1 - roi_x0;
+							int height = roi_y1 - roi_y0;
+							int side = width;
+							if (side < height) side = height;
+							cv::Rect roi_rect = cv::Rect(roi_x0, roi_y0, side, side);
 							
 							input_image[i] = cvCloneImage(&(IplImage)img_origin[i]);
 
@@ -261,7 +266,7 @@ int main(int argc, char **argv)
 			} // end of external if(tracks)
 			
 			// Подсчитываем число объектов
-			issueCounting->setInput(img_blob[0]);
+			issueCounting->setInput(img_blob[control_num]);
 			issueCounting->setTracks(tracks);
 			issueCounting->process();
 		} //end of external if (mask)
