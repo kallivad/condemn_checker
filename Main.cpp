@@ -20,37 +20,49 @@
 
 using namespace cv;
 
-/*
-cv::Rect recalculate_roi(cv::Rect roi, float scale) 
-{
-	
-}*/
-
 int main(int argc, char **argv)
 {
 	//Информация об использовании фреймворка OpenCV
 	std::cout << "Using OpenCV " << CV_MAJOR_VERSION << "." << CV_MINOR_VERSION << "." << CV_SUBMINOR_VERSION << std::endl;
 
+	int source_num = atoi(argv[2]);
+
 	/* Открытие видео источника*/
 	CvCapture* capture[7];
 	char video_file[50];
-	//sprintf(video_file, "%s%d.avi", argv[1], 1);
-	//sprintf(video_file, "%s", argv[1]);
+	//sprintf(video_file, "%s//out%d.avi", argv[3], 1);
+	//sprintf(video_file, "%s", argv[3]);
 	std::cout << "Opening " << video_file << "\n";
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < source_num; i++)
 	{
 		capture[i] = 0;
 	}
 
-	capture[0] = cvCaptureFromAVI("../video_new/out1.avi");
-	capture[1] = cvCaptureFromAVI("../video_new/out2.avi");
-	capture[2] = cvCaptureFromAVI("../video_new/out3.avi");
+	std::cout << argv[1] << std::endl;
+
+	if (atoi(argv[1]) == 0) 
+	{
+		std::cout << "Opening from " << argv[3] << std::endl;
+		
+		for (int i = 0; i < source_num; i++) {
+			sprintf(video_file, "%s//out%d.avi", argv[3], i+1);
+			capture[i] = cvCaptureFromAVI(video_file);
+		}
+	
+	}
+	else if (atoi(argv[1]) == 1) 
+	{
+		std::cout << "Opening from" << source_num << "cameras" << std::endl;
+		for (int i = 0; i < source_num; i++) {
+			capture[i] = cvCaptureFromCAM(i);
+		}
+	}
 
 
 	//capture = cvCaptureFromCAM(0);
-	int width = cvGetCaptureProperty(capture[1], CV_CAP_PROP_FRAME_WIDTH);
-	int height = cvGetCaptureProperty(capture[1], CV_CAP_PROP_FRAME_HEIGHT);
-	//int fps = cvGetCaptureProperty(capture, CV_CAP_PROP_FPS);
+	int width = cvGetCaptureProperty(capture[0], CV_CAP_PROP_FRAME_WIDTH);
+	int height = cvGetCaptureProperty(capture[0], CV_CAP_PROP_FRAME_HEIGHT);
+	int fps = cvGetCaptureProperty(capture[0], CV_CAP_PROP_FPS);
 	
 	int camera_num = 1;
 
@@ -58,7 +70,7 @@ int main(int argc, char **argv)
 	//cv::VideoWriter output;
 	//output.open(argv[2], CV_FOURCC('F', 'M', 'P', '4'), fps, cv::Size(width, height), false);
 
-	if (!capture) {
+	if (!capture[0]) {
 		std::cerr << "Cannot open video!" << std::endl;
 		return 1;
 	}
@@ -66,12 +78,16 @@ int main(int argc, char **argv)
 	/* Алгоритм выделения переднего фона */
 	//Мы используем PBAS: https://sites.google.com/site/pbassegmenter/home
 	IBGS *bgs[7];
-	bgs[0] = new PixelBasedAdaptiveSegmenter;
+	
 
 	/* Алгоритм трекинга связных компонент Blob */
 	cv::Mat img_blob[7];
 	BlobTracking* blobTracking[7];
-	blobTracking[0] = new BlobTracking;
+	
+	for (int i = 0; i < source_num; i++) {
+		bgs[i] = new PixelBasedAdaptiveSegmenter;
+		blobTracking[i] = new BlobTracking;
+	}
 
 	/* Алгоритм подсчёта предметов */
 	VehicleCouting* issueCounting;
@@ -86,47 +102,66 @@ int main(int argc, char **argv)
 	int issue_in_roi_count = 0;
 	bool first_time = true;
 
+
 	while (key != 'q')
 	{
 		
-		inframe[0] = cvQueryFrame(capture[0]);
 		cv::Mat img_origin[7];
-		img_origin[0] = cv::Mat(inframe[0]);
-		if (!inframe[0]) break;
-		const int new_width = (int)((float)inframe[0]->width * kRescaleFactor);
-		const int new_height = (int)((float)inframe[0]->height * kRescaleFactor);
-		frame[0] = cvCreateImage(cvSize(new_width, new_height), inframe[0]->depth, inframe[0]->nChannels);
-		cvResize(inframe[0], frame[0]);
-
 		cv::Mat img_input[7];
-		img_input[0]=cv::Mat(frame[0]);
-
-		// bgs->process(...) обрабатывает изображение выделяя маску движ. объектов
 		cv::Mat img_mask[7];
-		bgs[0]->process(img_input[0], img_mask[0]);
 
-		//Морфологическая обработка маски для устранения разрывов
-		//между близкими компонентами
-		int rect_size = 20;
-		cv::Mat kernel = getStructuringElement(MORPH_RECT, Size(rect_size, rect_size));
-		morphologyEx(img_mask[0], img_mask[0], MORPH_CLOSE, kernel);
-		cv::imshow("Processed Foreground", img_mask[0]);
-		kernel.release();
 
-		//output.write(img_mask);
+		for (int i = 0; i < source_num; i++) 
+		{
+			inframe[i] = cvQueryFrame(capture[i]);
+			img_origin[i] = cv::Mat(inframe[i]);
+			if (!inframe[i]) break;
+			const int new_width = (int)((float)inframe[i]->width * kRescaleFactor);
+			const int new_height = (int)((float)inframe[i]->height * kRescaleFactor);
+			frame[i] = cvCreateImage(cvSize(new_width, new_height), inframe[i]->depth, inframe[i]->nChannels);
+			cvResize(inframe[i], frame[i]);
+
+			img_input[i] = cv::Mat(frame[i]);
+
+			// bgs->process(...) обрабатывает изображение выделяя маску движ. объектов		
+			bgs[i]->process(img_input[i], img_mask[i]);
+
+			//Визуализируем маску
+			char win_name[10];
+			sprintf(win_name, "FG%d", i + 1);
+			if(!img_mask[i].empty())
+				cv::imshow(win_name, img_mask[i]);
+
+			//Морфологическая обработка маски для устранения разрывов
+			//между близкими компонентами
+			int rect_size = 20;
+			cv::Mat kernel = getStructuringElement(MORPH_RECT, Size(rect_size, rect_size));
+			morphologyEx(img_mask[i], img_mask[i], MORPH_CLOSE, kernel);			
+			kernel.release();
+		}
+
+		//output.write(img_mask[0]);
 
 		if (!img_mask[0].empty())
 		{
-			// Осуществляем трекинг связных компонент Blob переднего фона
-			blobTracking[0]->process(img_input[0], img_mask[0], img_blob[0]);
-
-			// Записываем картинку если попали в область ROI первой ind[0] камеры
-			cvb::CvTracks tracks = blobTracking[0]->getTracks();
 			cvb::CvBlobs blobs[7];
-			blobs[0] = blobTracking[0]->getBlobs();
+			cvb::CvTracks tracks;
+			
+			tracks = blobTracking[0]->getTracks();
 
+		
+			for (int i = 0; i < source_num; i++)
+			{
+				// Осуществляем трекинг связных компонент Blob переднего фона
+				blobTracking[i]->process(img_input[i], img_mask[i], img_blob[i]);
+			}
+			
+						
 			if (!tracks.empty())
 			{
+				for (int i = 0; i < source_num; i++)
+					blobs[i] = blobTracking[i]->getBlobs();
+
 				std::map<cvb::CvID, cvb::CvTrack*>::iterator it = tracks.begin();
 				//cvb::CvID id = (*it).first;
 				cvb::CvTrack* track = (*it).second;
@@ -137,101 +172,110 @@ int main(int argc, char **argv)
 				double rx1 = issueCounting->r_x1;
 				double ry1 = issueCounting->r_y1;
 
+				// Записываем картинку если попали в область ROI первой ind[0] камеры
 				if (centroid.x > rx0 && centroid.x < rx1 && centroid.y > ry0 && centroid.y < ry1)
 				{
 					issue_in_roi_count++;
-					if (first_time) 
+					if (first_time)
 					{
 						cv::destroyWindow("ROI_issue");
-						issue_count++; 
+						issue_count++;
 						first_time = false;
 					}
 
 					std::cout << "Object in zone \n";
+					IplImage* input_image[7];
+					IplImage *roi_image[7];
+					cv::Mat roi_img[7];
 					
-					if (!blobs[0].empty())
+					//проходим по всем blobs от всех источников и выделяем на них текущий единственный blob
+					for (int i = 0; i < source_num; i++)
 					{
-						std::map<cvb::CvID, cvb::CvBlob*>::iterator iter = blobs[0].begin();
-						//cvb::CvID id = (*iter).first;
-						cvb::CvBlob* blob = (*iter).second;
 
-						int roi_x0 = blob->minx / kRescaleFactor;
-						int roi_y0 = blob->miny / kRescaleFactor;
-						int roi_x1 = blob->maxx / kRescaleFactor;
-						int roi_y1 = blob->maxy / kRescaleFactor;
-						cv::Rect roi_rect = cv::Rect(roi_x0, roi_y0, roi_x1 - roi_x0, roi_y1 - roi_y0);
+						if (!blobs[i].empty())
+						{
+							std::map<cvb::CvID, cvb::CvBlob*>::iterator iter = blobs[i].begin();
+							//cvb::CvID id = (*iter).first;
+							cvb::CvBlob* blob = (*iter).second;
 
+							int roi_x0 = blob->minx / kRescaleFactor;
+							int roi_y0 = blob->miny / kRescaleFactor;
+							int roi_x1 = blob->maxx / kRescaleFactor;
+							int roi_y1 = blob->maxy / kRescaleFactor;
+							cv::Rect roi_rect = cv::Rect(roi_x0, roi_y0, roi_x1 - roi_x0, roi_y1 - roi_y0);
+							
+							input_image[i] = cvCloneImage(&(IplImage)img_origin[i]);
 
-						IplImage* input_image[7];
-						input_image[0] = cvCloneImage(&(IplImage)img_origin[0]);
+							// Установка ИОР
+							cvSetImageROI(input_image[i], roi_rect);
+							// Создание образа ( roi_image ) для сохранения вырезанного изображения
+							roi_image[i] = cvCreateImage(cvGetSize(input_image[i]), input_image[i]->depth, input_image[i]->nChannels);
+							cvCopy(input_image[i], roi_image[i], NULL);
+							cvResetImageROI(input_image[i]);							
+							roi_img[i] = cvarrToMat(roi_image[i]);
 
-						// Установка ИОР
-						cvSetImageROI(input_image[0], roi_rect);
-						// Создание образа ( image ) для сохранения вырезаниого изображения
-						// Функция cvGetSize возвращает ширину ( width ) и высоту ( height ) ИОР
-						IplImage *roi_image[7];
-						roi_image[0] = cvCreateImage(cvGetSize(input_image[0]), input_image[0]->depth, input_image[0]->nChannels);
-						cvCopy(input_image[0], roi_image[0], NULL);
-						cvResetImageROI(input_image[0]);
-						cv::Mat roi_img[7];
-						roi_img[0] = cvarrToMat(roi_image[0]);
-						
-						//формирование строки директории, файла и запись в файл
-						char roi_file_dir[50];
-						char roi_file_string[50];
-						//sprintf(roi_file_string, "%s/%d/%d_issue.jpg", argv[2], issue_count, camera_num);
-						sprintf(roi_file_dir, "%s\\%d\\",argv[2],issue_count);
-						int res = mkdir(roi_file_dir);
-						sprintf(roi_file_string, "%s\%d\\cam%d_num%d_issue.jpg",argv[2], issue_count, camera_num, issue_in_roi_count);
-						std::cout << "Writing in " << roi_file_string << "\n";
-						vector<int> compression_params;
-						compression_params.push_back(CV_IMWRITE_JPEG_QUALITY);
-						compression_params.push_back(100);
-						imwrite(roi_file_string, roi_img[0], compression_params);
+							//формирование строки директории, файла и запись в файл
+							char roi_file_dir[50];
+							char roi_file_string[50];
+							//sprintf(roi_file_string, "%s/%d/%d_issue.jpg", argv[2], issue_count, camera_num);
+							sprintf(roi_file_dir, "%s\\%d\\", argv[4], issue_count);
+							int res = mkdir(roi_file_dir);
+							camera_num = i + 1;
+							sprintf(roi_file_string, "%s\%d\\cam%d_num%d_issue.jpg", argv[4], issue_count, camera_num, issue_in_roi_count);
+							std::cout << "Writing in " << roi_file_string << "\n";
+							vector<int> compression_params;
+							compression_params.push_back(CV_IMWRITE_JPEG_QUALITY);
+							compression_params.push_back(100);
+							imwrite(roi_file_string, roi_img[i], compression_params);
 
-						//показываем в отдельном окне
-						cv::imshow("ROI_issue", roi_img[0]);
+							//показываем в отдельном окне
+							cv::imshow("ROI_issue", roi_img[i]);
 
-						cvReleaseImage(&input_image[0]);
-						cvReleaseImage(&roi_image[0]);
-						//roi_img.release();
+							cvReleaseImage(&input_image[i]);
+							cvReleaseImage(&roi_image[i]);							
+						} //end of internal if (blobs)
 
-						//подсвечиваем объект на входном изображении
-						//cv::rectangle(img_input, roi_rect, cv::Scalar(0, 250, 0), 2);
-					}
-				}
-				else 
-				{ 
-					first_time = true; 
-					issue_in_roi_count = 0; 
-				}
+					} //end of for
+				
+				} //end of middle if(roi)
+				else
+				{
+					first_time = true;
+					issue_in_roi_count = 0;
+				} 
 
-			}
+			} // end of external if(tracks)
 			
 			// Подсчитываем число объектов
 			issueCounting->setInput(img_blob[0]);
 			issueCounting->setTracks(tracks);
 			issueCounting->process();
-		}
+		} //end of external if (mask)
 		
-
-		img_origin[0].release();
-		img_blob[0].release();
-		img_mask[0].release();
-		//img_input.release();
-		cvReleaseImage(&frame[0]);
+		for (int i = 0; i < source_num; i++)
+		{
+			img_origin[i].release();
+			img_blob[i].release();
+			img_mask[i].release();
+			cvReleaseImage(&frame[i]);
+			//img_input.release();
+		}
 
 		key = cvWaitKey(1);
 	}
 
 	delete issueCounting;
-	delete blobTracking[0];
-	delete bgs;
+	
+	for (int i = 0; i < source_num; i++) 
+	{
+		delete blobTracking[i];
+		delete bgs[i];
+		cvReleaseImage(&inframe[i]);
+		cvReleaseCapture(&capture[i]);
+	}
 
-	//output.release();	
-	cvReleaseImage(&inframe[0]);
+	//output.release();		
 	cvDestroyAllWindows();
-	cvReleaseCapture(capture);
 
 	return 0;
 }
