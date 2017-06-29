@@ -5,22 +5,22 @@ e:\projects\checker\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': 
 ..\Main.cpp(63): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
 ..\Main.cpp(64): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
 ..\Main.cpp(65): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-..\Main.cpp(101): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
-..\Main.cpp(101): warning C4244: инициализация: преобразование "double" в "const float", возможна потеря данных
-..\Main.cpp(203): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
-..\Main.cpp(204): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
-..\Main.cpp(205): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
-..\Main.cpp(206): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
-..\Main.cpp(226): warning C4129: %: неизвестная escape-последовательность
+..\Main.cpp(113): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+..\Main.cpp(113): warning C4244: инициализация: преобразование "double" в "const float", возможна потеря данных
+..\Main.cpp(215): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
+..\Main.cpp(216): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
+..\Main.cpp(217): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
+..\Main.cpp(218): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
+..\Main.cpp(238): warning C4129: %: неизвестная escape-последовательность
 ..\Main.cpp(48): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1769): note:  см. объявление "sprintf"
-..\Main.cpp(133): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+..\Main.cpp(145): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1769): note:  см. объявление "sprintf"
-..\Main.cpp(223): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+..\Main.cpp(235): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1769): note:  см. объявление "sprintf"
-..\Main.cpp(224): warning C4996: 'mkdir': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _mkdir. See online help for details.
+..\Main.cpp(236): warning C4996: 'mkdir': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _mkdir. See online help for details.
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\direct.h(108): note:  см. объявление "mkdir"
-..\Main.cpp(226): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+..\Main.cpp(238): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1769): note:  см. объявление "sprintf"
   Создание кода
 e:\projects\checker\package_tracking\cvblob\cvlabel.cpp(361): warning C4715: cvLabel: значение возвращается не при всех путях выполнения

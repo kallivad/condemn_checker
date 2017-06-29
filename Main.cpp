@@ -66,6 +66,18 @@ int main(int argc, char **argv)
 
 	std::cout << "Capture created: " << width << "X" << height << "  FPS:" << fps << std::endl;
 	
+	int set_width = atoi(argv[6]);
+	int set_height = atoi(argv[7]);
+
+	std::cout << "Trying set propierty width: " << set_width << " height:" << set_height << std::endl;
+
+	for (int i = 0; i < source_num; i++)
+	{
+		//обработать исключение
+		cvSetCaptureProperty(capture[i], CV_CAP_PROP_FRAME_WIDTH, set_width);
+		cvSetCaptureProperty(capture[i], CV_CAP_PROP_FRAME_HEIGHT, set_height);
+	}
+
 	int camera_num = 1;
 
 	// Создание файла записи процессинга - только для отладки
