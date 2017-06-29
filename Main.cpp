@@ -63,6 +63,8 @@ int main(int argc, char **argv)
 	int width = cvGetCaptureProperty(capture[0], CV_CAP_PROP_FRAME_WIDTH);
 	int height = cvGetCaptureProperty(capture[0], CV_CAP_PROP_FRAME_HEIGHT);
 	int fps = cvGetCaptureProperty(capture[0], CV_CAP_PROP_FPS);
+
+	std::cout << "Capture created: " << width << "X" << height << "  FPS:" << fps << std::endl;
 	
 	int camera_num = 1;
 
@@ -96,7 +98,7 @@ int main(int argc, char **argv)
 	std::cout << "Press 'q' to quit..." << std::endl;
 	int key = 0;
 	IplImage *inframe[7], *frame[7];
-	const float kRescaleFactor = 0.3;
+	const float kRescaleFactor = atof(argv[5]);
 
 	int issue_count = 0;
 	int issue_in_roi_count = 0;
